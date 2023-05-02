@@ -9,6 +9,7 @@ import Home from './Components/Home/Home';
 import Login from './Components/Login/Login';
 import Signup from './Components/Login/Signup';
 import Navbar from './Components/Navbar/Navbar';
+import TimeTable from './Components/TimeTable/TimeTable'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path='/' element={<Home/>}></Route>
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/signup' element={<Signup/>}></Route>
+        <Route path='/timetable' element={<TimeTable/>}></Route>
 
       </Routes>
     </Router>
