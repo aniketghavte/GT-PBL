@@ -7,7 +7,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: black;
+    background-color: rgb(255, 255, 255);
 }
 .tableBox{
     min-width: 16%;
@@ -19,7 +19,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 .tableIndex{
    background-color: rgb(169, 169, 169);
+}
+.sign_btn{
+    background-color: rgb(27, 27, 27);
+    color: white;
+    text-align: center;
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -6,11 +6,13 @@ const Navbar = () => {
   return (
     <div className='app__navbar'>
         <div className='navbar'>
+          <Link to={`/`}>
             <div>
-                <p>LOGO</p>
-            </div>
+                  <p>LOGO</p>
+              </div>
+          </Link>
             <div>
-                <Link to={`login`}><p>Generate TimeTable</p></Link>
+                <Link to={`/generate-timetable`}><p>Generate TimeTable</p></Link>
             </div>
         </div>
     </div>

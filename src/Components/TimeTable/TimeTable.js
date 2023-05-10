@@ -50,10 +50,18 @@ const TimeTable = () => {
       [    { subject: 'Maths', teacher: 'Mr. A' },    { subject: 'Science', teacher: 'Ms. B' },    { subject: 'English', teacher: 'Mrs. C' },    { subject: 'History', teacher: 'Mr. D' },    { subject: 'Geography', teacher: 'Ms. E' },  ],
       [    { subject: 'Maths', teacher: 'Mr. A' },    { subject: 'Science', teacher: 'Ms. B' },    { subject: 'English', teacher: 'Mrs. C' },    { subject: 'History', teacher: 'Mr. D' },    { subject: 'Geography', teacher: 'Ms. E' },  ],
     ];
+
+
+    const handleClickClass = (classes) => {
+      setModalShow(true)
+    }
   return (
     <div className='app__tt'>
-      <h1 style={{color: "white", fontWeight: "300"}}>SE CS B TimeTable</h1>
-       <div style={{minWidth: "90%", maxWidth: "90%", backgroundColor: "#ffffff", minHeight: "90%"}}>
+      <h1 style={{color: "#141414", fontWeight: "500", marginTop: "2rem"}}>SE CS B TimeTable</h1>
+      <h2 style={{color: "#141414", fontWeight: "400"}}>Created By</h2>
+      <h3 style={{color: "#141414", fontWeight: "300"}}>Aniket Ghavte</h3>
+      <h5 style={{color: "#141414", fontWeight: "300"}}>On, 11th May 2023</h5>
+       <div style={{minWidth: "90%", maxWidth: "90%", backgroundColor: "#ffffff", height: "80%"}}>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
                 <div className="tableBox tableIndex">
                   classes
@@ -82,7 +90,7 @@ const TimeTable = () => {
                 <div className="tableBox tableIndex">
                   Monday
                 </div>
-                <div className="tableBox">
+                <div className="tableBox" onClick={() => handleClickClass("Class")}>
                   Class1
                 </div>
                 <div className="tableBox">

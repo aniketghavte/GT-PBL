@@ -10,6 +10,7 @@ import Login from './Components/Login/Login';
 import Signup from './Components/Login/Signup';
 import Navbar from './Components/Navbar/Navbar';
 import TimeTable from './Components/TimeTable/TimeTable'
+import GT from './Components/GenerateTimetable/GT';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/signup' element={<Signup/>}></Route>
         <Route path='/timetable' element={<TimeTable/>}></Route>
+        <Route path='/generate-timetable' element={<GT/>}></Route>
 
       </Routes>
     </Router>
