@@ -4,41 +4,16 @@ mongoose.plugin(mongoosePaginate);
 
 const userSchema = new mongoose.Schema(
   {
-    walletAddress: {
-      type: String,
-      unique: true,
-      sparse: true
-    }
-    ,
     email: {
       type: String,
       trim: true,
     },
     name: {
-      type: String,
+      type: String
     },
-    username: {
-      type: String,
-      min : 3,
-      max : 20,
-    },
-    bio: {
-      type: String,
-      sparse: true,
-      max: 200,
-    },
-    tags: {
-      type: [String],
-
-    },
-    isCompleted: {
-      type: Boolean,
-      default: false,
-    },
-    completionStatus: {
-      type: Number,
-      default: 0,
-    },
+    password: {
+      type: String
+    }
   },
   {
     timestamps: true,

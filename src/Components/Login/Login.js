@@ -1,4 +1,8 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { Navigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 import './Login.css'
 import {
   MDBBtn,
@@ -12,64 +16,118 @@ import {
   MDBIcon
 }
 from 'mdb-react-ui-kit';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 const Login = () => {
+
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+
+  const handleLogin = async () => {
+    axios.post('http://localhost:4000/api/auth/login', {
+      email: email,
+      password: password
+    })
+    .then(async function (response) {
+      // handle success
+      localStorage.setItem("userName", response.data.user.name)
+      localStorage.setItem("userId", response.data.user._id)
+      toast.success(response.data.message);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(response);
+    
+      navigate('/generate-timetable')
+
+    })
+    .catch(function (error) {
+      toast.error(error.response.data.message);
+      console.log(error.response.data);
+    })
+    .finally(function () {
+    });
+  }
+
   return (
-  <MDBContainer fluid className='p-4'>
+    <>
+      {localStorage.getItem("userId") !== null && (
+          
+          <Navigate to="/generate-timetable" replace={true} />
+        )
+      }
+    <MDBContainer fluid className='p-4'>
 
-      <MDBRow>
+        <MDBRow>
 
-        <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
+          <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
 
-          <h1 className="my-5 display-3 fw-bold ls-tight px-3">
-            Hello There, <br />
-            <span className="text-primary">Login To Generate TimeTable</span>
-          </h1>
+            <h1 className="my-5 display-3 fw-bold ls-tight px-3">
+              Hello There, <br />
+              <span className="text-primary">Login To Generate TimeTable</span>
+            </h1>
 
-          <p className='px-3' style={{color: 'hsl(217, 10%, 50.8%)'}}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Eveniet, itaque accusantium odio, soluta, corrupti aliquam
-            quibusdam tempora at cupiditate quis eum maiores libero
-            veritatis? Dicta facilis sint aliquid ipsum atque?
-          </p>
+            <p className='px-3' style={{color: 'hsl(217, 10%, 50.8%)'}}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Eveniet, itaque accusantium odio, soluta, corrupti aliquam
+              quibusdam tempora at cupiditate quis eum maiores libero
+              veritatis? Dicta facilis sint aliquid ipsum atque?
+            </p>
 
-        </MDBCol>
+          </MDBCol>
 
-        <MDBCol md='6'>
+          <MDBCol md='6'>
 
-          <MDBCard className='my-5'>
-            <MDBCardBody className='p-5'>
+            <MDBCard className='my-5'>
+              <MDBCardBody className='p-5'>
 
-              <MDBRow>
-                <MDBCol col='6'>
-                  <p>First Name</p>
-                  <MDBInput wrapperClass='mb-4'  id='form1' type='text' placeholder='FirstName'/>
-                </MDBCol>
+                {/* <MDBRow>
+                  <MDBCol col='6'>
+                    <p>First Name</p>
+                    <MDBInput wrapperClass='mb-4'  id='form1' type='text' placeholder='FirstName'/>
+                  </MDBCol>
 
-                <MDBCol col='6'>
-                  <p>Last Name</p>
-                  <MDBInput wrapperClass='mb-4'  id='form1' type='text' placeholder='LastName'/>
-                </MDBCol>
-              </MDBRow>
-              <p>Email</p>
-              <MDBInput wrapperClass='mb-4'  id='form1' type='email' placeholder='Email'/>
-              <p>Password</p>
-              <MDBInput wrapperClass='mb-4' id='form1' type='password' placeholder='Password'/>
+                  <MDBCol col='6'>
+                    <p>Last Name</p>
+                    <MDBInput wrapperClass='mb-4'  id='form1' type='text' placeholder='LastName'/>
+                  </MDBCol>
+                </MDBRow> */}
+                <p>Email</p>
+                <MDBInput wrapperClass='mb-4'  id='form1' type='email' placeholder='Email' value={email} onChange={handleEmailChange }/>
+                <p>Password</p>
+                <MDBInput wrapperClass='mb-4' id='form1' type='password' placeholder='Password' value={password} onChange={handlePasswordChange}/>
 
-              <div className='d-flex justify-content-center mb-4'>
-                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember Me' />
-              </div>
+                <div className='d-flex justify-content-center mb-4'>
+                  <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember Me' />
+                </div>
 
-              <button className='sign_btn' style={{width: "100%", marginBottom: "2rem", border: "none", height: "2rem", borderRadius: "5px"}}>Sign In</button>
+                <button className='sign_btn' style={{width: "100%", marginBottom: "2rem", border: "none", height: "2rem", borderRadius: "5px"}} onClick={handleLogin}>Sign In</button>
 
-            </MDBCardBody>
-          </MDBCard>
+                <p>Don't Have an Account? <span><Link to="/signup" >Register Here</Link></span></p>
 
-        </MDBCol>
+              </MDBCardBody>
+            </MDBCard>
 
-      </MDBRow>
+          </MDBCol>
 
-    </MDBContainer>
+        </MDBRow>
+
+      </MDBContainer>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
+    </>
   )
 }
 

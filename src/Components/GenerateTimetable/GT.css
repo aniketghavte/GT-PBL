@@ -1,0 +1,73 @@
+.app__gt{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    height: 100%;
+    width: 100%;
+    padding: 2rem;
+    padding-bottom: 10rem;
+    /* background-color: rgb(222, 239, 255); */
+
+}
+.app_class_card{
+    width: 80%;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+}
+.class_card{
+    height: auto;
+    min-height: 20rem;
+    width: 20rem;
+    background-color: aliceblue;
+    background: rgba(0, 97, 243, 0.113);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 2.5px );
+    -webkit-backdrop-filter: blur( 2.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.class_card h5{
+    margin-bottom: 1rem;
+}
+.class_card input, class_card input:focus-visible {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #4a4a4a;
+    outline: none;
+}
+.class_card p{
+    text-align: left;
+    width: 61%;
+    margin-top: 2rem;
+    margin-bottom: 0.4rem;
+}
+.generateBtn{
+    background-color: hwb(216 78% 0%);
+    border: none;
+    padding: 1rem 2.5rem;
+    background: rgba(0, 97, 243, 0.113);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 2.5px );
+    -webkit-backdrop-filter: blur( 2.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+   cursor: pointer;
+   transition: 0.8s;
+}
+.generateBtn:hover{
+    background: rgba(0, 97, 243, 0.417);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 2.5px );
+    -webkit-backdrop-filter: blur( 2.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}

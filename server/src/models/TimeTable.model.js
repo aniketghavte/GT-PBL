@@ -12,9 +12,6 @@ const timeTableSchema = new mongoose.Schema(
         type: String,
         unique: true
     },
-    banner:{
-        type: String
-    },
     description: {
         type: String
     },
@@ -38,6 +35,9 @@ const timeTableSchema = new mongoose.Schema(
             ]
         }
     ],
+    creator: {
+        type:mongoose.Types.ObjectId,ref:'User'
+    },
     tags: [
         {
             type : String
