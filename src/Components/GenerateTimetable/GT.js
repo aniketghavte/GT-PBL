@@ -9,6 +9,8 @@ const GT = () => {
 
   const navigate = useNavigate()
   const [generatedTimeTable, setGeneratedTimeTable] = useState();  
+  const [timeTableName, setTimeTableName] = useState();
+  const [timeTableDesc, setTimeTableDesc] = useState();
   const [formData, setFormData] = useState({
     class1: {
       teacher: '',
@@ -58,45 +60,33 @@ const GT = () => {
     console.log(timetable);
     setGeneratedTimeTable(timetable);
   
-    axios
-      .post('http://localhost:4000/api/timetable/createTimeTable', {
-        title: 'demo',
-        description: 'demo',
-        content: generatedTimeTable,
-        creator: localStorage.getItem('userId'),
-        tags: []
-      })
-      .then((response) => {
-        toast.success('TimeTable Successfully Generated');
-        console.log(response);
-        // Reset the form data
-        // setFormData({
-        //   class1: {
-        //     teacher: '',
-        //     subject: ''
-        //   },
-        //   class2: {
-        //     teacher: '',
-        //     subject: ''
-        //   },
-        //   class3: {
-        //     teacher: '',
-        //     subject: ''
-        //   },
-        //   class4: {
-        //     teacher: '',
-        //     subject: ''
-        //   },
-        //   class5: {
-        //     teacher: '',
-        //     subject: ''
-        //   }
-        // });
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-        console.log(error.response.data);
-      });
+    {
+      generatedTimeTable ?
+                axios
+                  .post('http://localhost:4000/api/timetable/createTimeTable', {
+                    title: timeTableName,
+                    description: timeTableDesc,
+                    content: generatedTimeTable,
+                    creator: localStorage.getItem('userId'),
+                    tags: []
+                  })
+                  .then(async function (response) {
+                    // handle success
+                    toast.success('TimeTable Successfully Generated');
+                    console.log(response);
+                    await new Promise((resolve) => setTimeout(resolve, 1400));
+                    console.log(response);
+                    navigate('/');
+                  })
+                  .catch(function (error) {
+                    toast.error(error.response.data.message);
+                    console.log(error.response.data);
+                  })
+                  .finally(function () {
+                  })
+      
+      : toast.error("ServerError Please Try Again")
+    }
   };
   
 
@@ -119,6 +109,21 @@ const GT = () => {
             <form style={{display: "flex", flexDirection: "column", justifyContent: "cneter", alignItems: "center", gap: "5rem 0"}}>
               <div className='app_class_card'>
 
+                <div className='class_card'>
+                      <h5>Details</h5>
+                      <p>TimeTable Name</p>
+                      <input type='text' placeholder='TimeTable Name' required value={timeTableName}
+                          onChange={(e) =>
+                            setTimeTableName(e.target.value)
+                          }
+                      />
+                      <p>TimeTable Description</p>
+                      <input type='text' placeholder='TimeTable Description' required value={timeTableDesc}
+                          onChange={(e) =>
+                            setTimeTableDesc(e.target.value)
+                          } 
+                      />
+                </div>
                 <div className='class_card'>
                       <h5>Class 1</h5>
                       <p>Teacher Name</p>
@@ -227,135 +232,12 @@ const GT = () => {
                 
       
 
-          <div className='app__tt' style={{marginTop: "5rem"}}>
-                  <div style={{minWidth: "90%", maxWidth: "90%", height: "80%"}}>
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <div className="tableBox tableIndex">
-                          classes
-                        </div>
-                        <div className="tableBox tableIndex">
-                          Class1
-                        </div>
-                        <div className="tableBox tableIndex">
-                          Class2
-                        </div>
-                        <div className="tableBox tableIndex">
-                          Class3
-                        </div>
-                        <div className="tableBox tableIndex">
-                          Class4
-                        </div>
-                        <div className="tableBox tableIndex">
-                          Class5
-                        </div>
-                    </div>
-
-                    {/* //DAYS */}
-
-                
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <div className="tableBox tableIndex">
-                          Monday
-                        </div>
-                        <div className="tableBox">
-                          Class1
-                        </div>
-                        <div className="tableBox">
-                          Class2
-                        </div>
-                        <div className="tableBox">
-                          Class3
-                        </div>
-                        <div className="tableBox">
-                          Class4
-                        </div>
-                        <div className="tableBox">
-                          Class5
-                        </div>
-                    </div>
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <div className="tableBox tableIndex">
-                          Thuesday
-                        </div>
-                        <div className="tableBox">
-                          Class1
-                        </div>
-                        <div className="tableBox">
-                          Class2
-                        </div>
-                        <div className="tableBox">
-                          Class3
-                        </div>
-                        <div className="tableBox">
-                          Class4
-                        </div>
-                        <div className="tableBox">
-                          Class5
-                        </div>
-                    </div>
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <div className="tableBox tableIndex">
-                          Wednesday
-                        </div>
-                        <div className="tableBox">
-                          Class1
-                        </div>
-                        <div className="tableBox">
-                          Class2
-                        </div>
-                        <div className="tableBox">
-                          Class3
-                        </div>
-                        <div className="tableBox">
-                          Class4
-                        </div>
-                        <div className="tableBox">
-                          Class5
-                        </div>
-                    </div>
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <div className="tableBox tableIndex">
-                          Friday
-                        </div>
-                        <div className="tableBox">
-                          Class1
-                        </div>
-                        <div className="tableBox">
-                          Class2
-                        </div>
-                        <div className="tableBox">
-                          Class3
-                        </div>
-                        <div className="tableBox">
-                          Class4
-                        </div>
-                        <div className="tableBox">
-                          Class5
-                        </div>
-                    </div>
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <div className="tableBox tableIndex" >
-                          Saturday
-                        </div>
-                        <div className="tableBox">
-                          Class1
-                        </div>
-                        <div className="tableBox">
-                          Class2
-                        </div>
-                        <div className="tableBox">
-                          Class3
-                        </div>
-                        <div className="tableBox">
-                          Class4
-                        </div>
-                        <div className="tableBox">
-                          Class5
-                        </div>
-                    </div>
-              </div>
-          </div>
+        
     </div>
+    <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
   </>
   )
 }

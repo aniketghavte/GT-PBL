@@ -1,49 +1,82 @@
 import React, {useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
+import moment from 'moment';
 import './TimeTable.css'; 
 
 
 const TimeTable = () => {
+  const location = useLocation();
+  const searchParams =  new URLSearchParams(location.search);
   const [timeTable, setTimeTable] = useState();
+  const [creator, setCreator] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedClassBox, setSelectedClassBox] = useState(null);
 
 
+
+    const handleBoxClick = (classBox) => {
+        console.log("box clicked")
+        setShowModal(true);
+        setSelectedClassBox(classBox);
+    }
+    const getCreator = () => {
+      axios.get(`http://localhost:4000/api/auth/user/${timeTable?.creator}`)
+      .then((response) => {
+        console.log(response.data.user);
+        setCreator(response.data.user)
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+
+      });
+    }
     const getTimeTable = () => {
       axios.get('http://localhost:4000/api/timetable/getTimeTable',{
         params: {
-          timeTableId: "645ea5ac3d8cb00241422936"
+          timeTableId: searchParams.get("id")
         }
       })
-      .then((response) => {
-        toast.success('TimeTable');
+      .then(async function (response) {
+        toast.success('TimeTable Fetched');
         console.log(response.data.timeTable);
-        setTimeTable(response.data.timeTable);
-
+        await setTimeTable(response.data.timeTable);
+        // getCreator()
+  
       })
-      .catch((error) => {
-        toast.error(error.response.data.message);
+      .catch(function (error) {
         console.log(error.response.data);
+      })
+      .finally(function () {
       });
+
     }
 
     useEffect(() => {
-      getTimeTable()
+      getTimeTable();
+
+
     }, [])
+    useEffect(() => {
+      getCreator();
+    }, []);
+
     
 
 
   return (
+    <>
     <div className='app__tt'>
-      <h1 style={{color: "#141414", fontWeight: "500", marginTop: "2rem"}}>SE CS B TimeTable</h1>
+      <h1 style={{color: "#141414", fontWeight: "500", marginTop: "2rem"}}>{timeTable?.title}</h1>
       <h2 style={{color: "#141414", fontWeight: "400"}}>Created By</h2>
-      <h3 style={{color: "#141414", fontWeight: "300"}}>Aniket Ghavte</h3>
-      <h5 style={{color: "#141414", fontWeight: "300"}}>On, 11th May 2023</h5>
+      <h3 style={{color: "#141414", fontWeight: "300"}}>{creator?.name}</h3>
+      <h5 style={{color: "#141414", fontWeight: "300"}}>On, {moment(timeTable?.createdAt).format("LLL")}</h5>
                   <div style={{minWidth: "90%", maxWidth: "90%", height: "80%"}}>
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                    {/* <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
                         <div className="tableBox tableIndex">
                           classes
                         </div>
@@ -62,7 +95,7 @@ const TimeTable = () => {
                         <div className="tableBox tableIndex">
                           Class5
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* //DAYS */}
                     {
@@ -74,7 +107,7 @@ const TimeTable = () => {
                                     </div>
                                     {
                                       item?.classes?.map((classBox, key) => {
-                                        return( <div className="tableBox" key={key}>
+                                        return( <div className="tableBox" key={key} onClick={() => handleBoxClick(classBox)}>
                                          <h4>{classBox?.subject}</h4>
                                          <h5>{classBox?.teacher}</h5>
                                       </div>)
@@ -89,7 +122,35 @@ const TimeTable = () => {
              
               </div>
 
+    <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+             {timeTable?.title}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{textAlign: "center"}}>
+          <h5>This is Held By</h5>
+          <h5>{selectedClassBox?.teacher}</h5>
+          <h5>For The Subject</h5>
+          <h5>{selectedClassBox?.subject}</h5>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setShowModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
+
+    <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
+    </>
   )
 }
 

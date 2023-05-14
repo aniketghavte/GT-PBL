@@ -2,9 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     padding: 5rem;
     gap: 3rem;
+    min-height: 100vh;
 }
 .gt_timetable{
     width: 50%;
