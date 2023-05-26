@@ -10,6 +10,15 @@ exports.createTimeTableHandler = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
 };
+exports.deleteTimeTableHandler = async (req, res) => {
+    try {
+      console.log(req.query)
+      const result = await timeTableService.deleteTimeTable(req.query.timeTableId);
+      res.status(result.status).json(result.data);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+};
 
 exports.getTimeTablesHandler = async (req, res) => {
     const { page, limit } = req.query;
@@ -25,6 +34,15 @@ exports.getTimeTableHandler = async (req, res) => {
     try {
         console.log(req.query)
       const result = await timeTableService.getTimeTable(req.query.timeTableId);
+      res.status(result.status).json(result.data);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+exports.downloadTimeTableHandler = async (req, res) => {
+    const timeTableId = req.query.timeTableId
+    try {
+      const result = await timeTableService.downloadTimeTable(timeTableId, res);
       res.status(result.status).json(result.data);
     } catch (error) {
       res.status(500).json({ message: error.message });

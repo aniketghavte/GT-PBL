@@ -46,7 +46,6 @@ const TimeTable = () => {
         console.log(response.data.timeTable);
         await setTimeTable(response.data.timeTable);
         // getCreator()
-  
       })
       .catch(function (error) {
         console.log(error.response.data);
@@ -55,6 +54,39 @@ const TimeTable = () => {
       });
 
     }
+    const DownloadTimeTable = () => {
+      axios({
+        url: 'http://localhost:4000/api/timetable/downloadTimeTable',
+        method: 'GET',
+        responseType: 'blob', // Set the response type to 'blob'
+        params: {
+          timeTableId: searchParams.get('id')
+        }
+      })
+        .then(function (response) {
+          // Create a URL object from the response data
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+    
+          // Create a temporary link element to initiate the download
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'timetable.pdf');
+          document.body.appendChild(link);
+          link.click();
+    
+          // Clean up the temporary objects
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+    
+          toast.success('TimeTable Downloaded');
+        })
+        .catch(function (error) {
+          console.log(error.response.data);
+        });
+    };
+    
+    
+    
 
     useEffect(() => {
       getTimeTable();
@@ -63,7 +95,7 @@ const TimeTable = () => {
     }, [])
     useEffect(() => {
       getCreator();
-    }, []);
+    }, [timeTable]);
 
     
 
@@ -75,6 +107,15 @@ const TimeTable = () => {
       <h2 style={{color: "#141414", fontWeight: "400"}}>Created By</h2>
       <h3 style={{color: "#141414", fontWeight: "300"}}>{creator?.name}</h3>
       <h5 style={{color: "#141414", fontWeight: "300"}}>On, {moment(timeTable?.createdAt).format("LLL")}</h5>
+      <div style={{position: "absolute", top: "0", right: "15rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer"}} onClick={() => DownloadTimeTable()}>
+      <lord-icon
+          src="https://cdn.lordicon.com/bgywtgwo.json"
+          trigger="hover"
+          colors="primary:#121331,secondary:#08a88a"
+          style={{height: "50px", fontWeight: "700"}}>
+      </lord-icon>
+      <p style={{marginTop: "0", fontWeight: "600"}}>Download</p>
+      </div>
                   <div style={{minWidth: "90%", maxWidth: "90%", height: "80%"}}>
                     {/* <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
                         <div className="tableBox tableIndex">

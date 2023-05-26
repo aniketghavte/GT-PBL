@@ -23,6 +23,24 @@ const Home = () => {
           });
     }
 
+    const handleDeleteTimeTable = (id) =>{
+              axios
+                  .get('http://localhost:4000/api/timetable/deleteTimeTable', {
+                    params: {
+                      timeTableId: id
+                    }
+                  })
+                  .then(async function (response) {
+                    toast.success('TimeTable Successfully Deleted');
+                    getTimeTables()
+                  })
+                  .catch(function (error) {
+                    toast.error(error.response.data.message);
+                  })
+                  .finally(function () {
+                  })
+    }
+
     useEffect(() => {
       getTimeTables();
     }, [])
@@ -43,6 +61,20 @@ const Home = () => {
                                 <p>{moment(item?.createdAt).format("MMM Do YY")} </p>
                             </div>
                         </Link>
+                        {
+                          localStorage.getItem("userId") === item?.creator ?
+                            <div style={{position: "absolute", right: "22rem", cursor: "pointer"}} onClick={() => handleDeleteTimeTable(item?._id)}>
+                                <lord-icon
+                                    src="https://cdn.lordicon.com/gsqxdxog.json"
+                                    trigger="hover"
+                                    colors="primary:#121331,secondary:#3080e8"
+                                    style={{height: "50px", width:"50px"}}>
+                                </lord-icon>
+                            </div> : <>
+                          
+                          </>
+                        }
+
                     </div>
                     </>)
                 })

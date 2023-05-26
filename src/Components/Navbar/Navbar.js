@@ -30,9 +30,7 @@ const Navbar = () => {
     <div className='app__navbar'>
         <div className='navbar'>
           <Link to={`/`}>
-            <div>
-                  <p>LOGO</p>
-              </div>
+                  <h2 style={{color: "black"}}>Time<span style={{color: "#0a58ca"}}>Wise</span></h2>
           </Link>
             <div>
               {
