@@ -90,7 +90,7 @@ exports.downloadTimeTable = async (timeTableId, res) => {
         doc.moveDown();
       });
   
-      const fileName = 'timetable.pdf';
+      const fileName = '../timetable.pdf';
       const writeStream = fs.createWriteStream(fileName);
       doc.pipe(writeStream);
   

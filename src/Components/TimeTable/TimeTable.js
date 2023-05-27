@@ -6,7 +6,10 @@ import axios from 'axios';
 import { Navigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import moment from 'moment';
+import { saveAs } from 'file-saver';
+import pdf from './timetable.pdf'
 import './TimeTable.css'; 
+
 
 
 const TimeTable = () => {
@@ -55,34 +58,37 @@ const TimeTable = () => {
 
     }
     const DownloadTimeTable = () => {
-      axios({
-        url: 'http://localhost:4000/api/timetable/downloadTimeTable',
-        method: 'GET',
-        responseType: 'blob', // Set the response type to 'blob'
-        params: {
-          timeTableId: searchParams.get('id')
-        }
-      })
-        .then(function (response) {
-          // Create a URL object from the response data
-          const url = window.URL.createObjectURL(new Blob([response.data]));
+      // axios({
+      //   url: 'http://localhost:4000/api/timetable/downloadTimeTable',
+      //   method: 'GET',
+      //   responseType: 'blob', // Set the response type to 'blob'
+      //   params: {
+      //     timeTableId: searchParams.get('id')
+      //   }
+      // })
+      //   .then(function (response) {
+      //     // Create a URL object from the response data
+      //     const url = window.URL.createObjectURL(new Blob([response.data]));
     
-          // Create a temporary link element to initiate the download
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', 'timetable.pdf');
-          document.body.appendChild(link);
-          link.click();
+      //     // Create a temporary link element to initiate the download
+      //     const link = document.createElement('a');
+      //     link.href = url;
+      //     link.setAttribute('download', 'timetable.pdf');
+      //     document.body.appendChild(link);
+      //     link.click();
     
-          // Clean up the temporary objects
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
+      //     // Clean up the temporary objects
+      //     document.body.removeChild(link);
+      //     window.URL.revokeObjectURL(url);
     
-          toast.success('TimeTable Downloaded');
-        })
-        .catch(function (error) {
-          console.log(error.response.data);
-        });
+      //     toast.success('TimeTable Downloaded');
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error.response.data);
+      //   });
+
+      const fileUrl = pdf;
+      saveAs(fileUrl, 'downloaded_file.pdf');
     };
     
     
