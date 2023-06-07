@@ -85,7 +85,7 @@ const TimeTable = () => {
       //   })
       //   .catch(function (error) {
       //     console.log(error.response.data);
-      //   });
+      //   }); 
 
       const fileUrl = pdf;
       saveAs(fileUrl, 'downloaded_file.pdf');
